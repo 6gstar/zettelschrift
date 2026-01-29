@@ -29,7 +29,7 @@ This entire README @has an arbitrary relation with@ [[Another file]]
 
 @[A file](jean-laplanche) has a relation with [Another file](jacques-lacan)@
 
-%Relational links can have sentence- or paragraph-length aliases too% @{:Neorg:} can host {:Zettelschrift:}@
+%Relational links can have *sentence-* or /paragraph-length/ aliases too. {everything-is-regular-prose-here-and-links-can-appear-too}% @{neorg.thing} can host {zettelschrift.thing}@
 
 %Zettelschrift does not interfer with host language's syntax% @[[org][Org-mode]] can host [[ztsch]]@
 
