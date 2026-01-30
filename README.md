@@ -106,6 +106,8 @@ _WIP. Check the roadmap!_
 
 ## Purpose, inspiration, and similar projects
 
+### To myself
+
 Zettelschrift is first and foremost an attempt to convert into digital shape my own notetaking and marginalia practices. What I study and research is filled to the brim with jargon, concepts, and confrontation between opposing views of the same subjects - consequently, it demands a lot of crossreferencing. It was not uncommon for me to highlight book and article sections, and then add marginalia such as:
 
 ```
@@ -114,10 +116,20 @@ Zettelschrift is first and foremost an attempt to convert into digital shape my 
 [This paragraph] -----> is the core argument of _This thesis_
 ```
 
-Such ontologized marginalia was then migrated by hand to my physical Zettelkasten (itself organized with Folgezettel) and integrated within freeform comments and thoughts. One can imagine how tiresome such proccess is.
+Such ontologized marginalia was then migrated by hand to my physical Zettelkasten (itself organized with Folgezettel) and integrated within freeform comments and thoughts. Later, I did many attempts at digital conversion.
 
-```ztsch``` 's is, secondly, an attempt at an agnostic extension for LMLs that is PKM-centric. A key challenge in today's personal knowledge management system ecosystems is silofication, and this issue is maximized when one tries to implement more than a simple wikilinking workflow. TiddlyWiki, Obsidian, Logseq, Roam, Org-mode and others all have their particular, untranslatable, and many times extremely app- or plugin-dependent (without equivalent plugins between apps) ways of extending simple linking to more complex forms of connections between ideas. By making a syntax that is as natural and easy to remember as possible, while actually well-formed and being able to degrade gracefully even when there are no tools for extracting and analysing it, I'm attempting to make the adoption of semantic linking less constrained to a single choice of ecosystem. Personal knowledge refactoring is time wasted not learning and experiencing the beauty and complexity of life. And life is too short.
+One can only imagine how tiresome such proccess can be.
 
-This is also, thirdly, an excuse for me to actually learn what I intend to learn. I'm a beginner when it comes to CS, and meaningful projects help with focus and not giving up.
+I've tested many PKMs and workflows in the past, both analogical and digital, and ultimately, there's no fits-all-sized tool for everything I need. Projects are abandoned, or take undesirable directions (I particularly hate Electron apps, which are now the norm). Commercial PKMs gobble up userbases and contributors.  And in the end, an untractable pile of files in many different extensions and syntaxes accumulates.
 
-There are many projects similar to this one:
+### To others
+
+```ztsch``` 's is an attempt to build an agnostic extension for LMLs that is PKM-centric. A key challenge in today's personal knowledge management system ecosystems is silofication, and this issue is maximized when one tries to implement more than a simple wikilinking workflow. TiddlyWiki, Obsidian, Logseq, Roam, Org-mode, Logseq and many others all have their particular, untranslatable, and many times extremely app- or plugin-dependent (without equivalent plugins between apps) ways of extending simple linking to more complex forms of connections between ideas.
+
+By making a syntax that is as natural and easy to remember as possible, tailored for parasiting popular LMLs (and *not* try to take their place) while actually well-formed and able to degrade gracefully even when there are no tools for extracting and analysing it, I'm attempting to make the adoption of a very specific, but also quite useful tool (semantic linking) less constrained to a single choice of ecosystem.
+
+Personal knowledge refactoring is time wasted not learning and experiencing the beauty and complexity of life. And life is too short.
+
+### From others
+
+There are many projects similar to this one, or that embody the same spirit:
