@@ -29,7 +29,7 @@ _This is a very early WIP, and most importantly, an experiment._
 ```
 This entire README @has an arbitrary relation with@ [[Another node]]
 
-@[A nodd](jean-laplanche) has a relation with [Another node](jacques-lacan)@
+@[A node](jean-laplanche) has a relation with [Another node](jacques-lacan)@
 
 %Relational links can have *full sentences* as _aliases_ for writing a relationship in prose too!% @[[Rellink alias]] describes [[Rellink]]@
 
@@ -59,9 +59,9 @@ Seqlinks, when present, are the primary ID of a node - and their header becomes 
 Seqlinks can be placed before or after a header, as long as the seqlink line is adjacent to the header line. A seqlink is the *full path*: @[[2/2]] is not [[2]]@.
 
 ### Allowed characters and elements
-2/abc/[Random node](random-node.md)
+2/Allowed characters and elements
 
-Alphanumerical strings of any length and/or actual links can be used. The / character determines the start and end of a node. If [[Random node]] has seqlink [[2/abc/1]], "Random node" is its header used as an alias.
+Alphanumerical strings of any length and/or actual links can be used. The / character determines the start and end of a node. You can recursively use the full title of a node too - and if someday you assign [[2/a]] to [[Allowed characters and elementd]], both [[2/a]] and [[2/Allowed characters and elementd]] resolve to the same node.
 
 2/3
 ### Nesting and header hierarchy
