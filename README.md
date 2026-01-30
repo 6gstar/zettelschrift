@@ -132,4 +132,23 @@ Personal knowledge refactoring is time wasted not learning and experiencing the 
 
 ### From others
 
-There are many projects similar to this one, or that embody the same spirit:
+A few projects have inspired this one:
+
+- [Agora Protocol](https://anagora.org): this takes wikilinks to their limit - how to make different people with their own notes maintain dissense while still organizing their in a way that ultimately is emergently semantic?
+- [Argdown](https://argdown.org/): Has a similar though not equal usecase when compared to Zettelschrift, and was one of its main inspirations.
+- [TiddlyWiki](https://tiddlywiki.com/): If anything comes close to emulating and expanding what a Zettelkasten can be, it's this.
+- [Semantic MediaWiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki): A very similar, but more rigorous and structured usecase.
+
+## Roadmap
+
+- [ ] Complete ZTSCH-CORE specification
+- [ ] Complete ZTSCH-HOSTS 1.0 specification
+- [ ] Test suite with edge cases
+- [ ] Parser prototype (Racket)
+- [ ] Reference parser (C)
+- [ ] CLI tools (parse, validate, stats, query)
+- [ ] Knowledge graph database (LMDB)
+- [ ] Query API and backlink resolution
+- [ ] LSP server for editor integration
+- [ ] Graph visualization tool
+- [ ] Documentation and examples
