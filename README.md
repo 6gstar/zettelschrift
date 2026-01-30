@@ -59,9 +59,9 @@ Seqlinks, when present, are the primary ID of a node - and their header becomes 
 Seqlinks can be placed before or after a header, as long as the seqlink line is adjacent to the header line. A seqlink is the *full path*: @[[2/2]] is not [[2]]@.
 
 ### Allowed characters and elements
-2/Allowed characters and elements
+2/abc
 
-Alphanumerical strings of any length and/or actual links can be used. The / character determines the start and end of a node. You can recursively use the full title of a node too - and if someday you assign [[2/a]] to [[Allowed characters and elementd]], both [[2/a]] and [[2/Allowed characters and elementd]] resolve to the same node.
+Alphanumerical strings of any length can be used. The / character determines the start and end of a node. A seqlink is always the full path. @[[abc]] is not [[2/abc]]@. Partial paths are not seqlinks: [[abc]] is treated as an independent node unrelated to [[2/abc]].
 
 2/3
 ### Nesting and header hierarchy
