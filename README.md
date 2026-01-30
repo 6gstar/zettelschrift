@@ -39,6 +39,8 @@ This entire README @has an arbitrary relation with
 %Rellinks' predicates can be themselves transformed into nodes, either through ztsch tools or explicitly using the host language's syntax% @[[A]] [[refutes]] [[B]]@
 
 Zettelschrift's tools can also interpret an @[[Entire rellink]] as [[a node]]@. If you create a node titled "Entire rellink as a node" without syntax markers, it becomes the node for that rellink.
+
+%A rellink's @[[alias]] can contain [[another rellink too]]@. You can also %nest an alias inside another alias% @[[Alias1]] nests [[Alias2]]@% @[[Aliases]] can [[nest]]@
 ```
 
 #### Sequential links
