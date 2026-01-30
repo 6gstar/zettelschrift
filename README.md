@@ -5,7 +5,7 @@
 1/4/10/1
 
 [[Jean Laplanche]] crafted an hypothesis/redefinition of the [[unconscious|Psychoanalytic unconscious]] by means of a %[[General seduction theory]] that resembles but ultimately goes against Lacan's conception of the unconscious' origin and foundations% @[[General seduction theory]] opposes [[Lacanian subject]]@ by building a well-defined [[etiology|Etiology]] and proposing more clear connections between his etiology and actual [[symptoms as they appear clinically|Unconscious formations]].
-In a sense, this means @[[Jean Laplanche]] is a rival of [[Jacques Lacan]]@, albeit one highly indebted to the later.
+In a sense, this means @[[Jean Laplanche]] is a rival of [[Jacques Lacan]]@, albeit one highly indebted to the latter.
 
 @is useful for@ [[Testing psychoanalysis]]
 @example of@ [[Well-formed psychoanalytic unconscious hypothesis]]
@@ -100,7 +100,7 @@ Zettelschrift also supports seqlinks and rellinks in frontmatter for LMLs that m
 
 _WIP. Check the roadmap!_
 
-### Plugins and modules for your ecossystem
+### Plugins and modules for your ecosystem
 
 _WIP. Check the roadmap!_
 
@@ -118,13 +118,13 @@ Zettelschrift is first and foremost an attempt to convert into digital shape my 
 
 Such ontologized marginalia was then migrated by hand to my physical Zettelkasten (itself organized with Folgezettel) and integrated within freeform comments and thoughts. Later, I did many attempts at digital conversion.
 
-One can only imagine how tiresome such proccess can be.
+One can only imagine how tiresome such process can be.
 
 I've tested many PKMs and workflows in the past, both analogical and digital, and ultimately, there's no fits-all-sized tool for everything I need. Projects are abandoned, or take undesirable directions (I particularly hate Electron apps, which are now the norm). Commercial PKMs gobble up userbases and contributors.  And in the end, an untractable pile of files in many different extensions and syntaxes accumulates.
 
 ### To others
 
-```ztsch``` 's is an attempt to build an agnostic extension for LMLs that is PKM-centric. A key challenge in today's personal knowledge management system ecosystems is silofication, and this issue is maximized when one tries to implement more than a simple wikilinking workflow. TiddlyWiki, Obsidian, Logseq, Roam, Org-mode, Logseq and many others all have their particular, untranslatable, and many times extremely app- or plugin-dependent (without equivalent plugins between apps) ways of extending simple linking to more complex forms of connections between ideas.
+```ztsch```  is an attempt to build an agnostic extension for LMLs that is PKM-centric. A key challenge in today's personal knowledge management system ecosystems is silofication, and this issue is maximized when one tries to implement more than a simple wikilinking workflow. TiddlyWiki, Obsidian, Logseq, Roam, Org-mode, Logseq and many others all have their particular, untranslatable, and many times extremely app- or plugin-dependent (without equivalent plugins between apps) ways of extending simple linking to more complex forms of connections between ideas.
 
 By making a syntax that is as natural and easy to remember as possible, tailored for parasiting popular LMLs (and *not* try to take their place) while actually well-formed and able to degrade gracefully even when there are no tools for extracting and analysing it, I'm attempting to make the adoption of a very specific, but also quite useful tool (semantic linking) less constrained to a single choice of ecosystem.
 
