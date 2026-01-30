@@ -27,7 +27,8 @@ _This is a very early WIP, and most importantly, an experiment._
 #### Relational links
 
 ```
-This entire README @has an arbitrary relation with@ [[Another node]]
+This entire README @has an arbitrary relation with
+[[Another node]]@
 
 @[A node](jean-laplanche) has a relation with [Another node](jacques-lacan)@
 
@@ -76,6 +77,21 @@ A whole file can have multiple nodes. @[[Seqlinks]] make [[Nodes]]@ out of an or
 ## An example
 
 @[[This rellink]] belongs to [[2]]@. @[[This rellink]] does not belong to [[2/3/a]]@
+
+Simple rellinks @also belong to [[2]]@.
+```
+
+#### Frontmatter
+
+```
+ztsch-seqlink: 3/2/c
+ztsch-rellink:
+ - @is [[Frontmatter]]@
+ - @[[Ztsch]] supports [[Frontmatter]]@
+---
+# Frontmatter
+
+Zettelschrift also supports seqlinks and rellinks in frontmatter for LMLs that make use of it.
 ```
 
 ### Agnostic tools
