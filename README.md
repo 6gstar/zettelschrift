@@ -40,33 +40,42 @@ This entire README @has an arbitrary relation with@ [[Another node]]
 Zettelschrift's tools can also interpret an @[[Entire rellink]] as [[a node]]@. If you create a node titled "Entire rellink as a node" without syntax markers, it becomes the node for that rellink.
 ```
 
-#### Sequential links (Folgezettel)
+#### Sequential links
 
 ```
-# Just like many systems for Zettelkasten, you can identify nodes with numbers and letters,
-1
+# Seqlinks
+2
 
-# and by writing into another file like this, you create a sequential link (that also acts as a identifier)
-1/a
+@[[Seqlinks]] come from [[Niklas Luhmann's Folgezettel]]@. They're a parent-child ID for your nodes that you can use to gradually and naturally build a tree graph of them.
 
-# Any alphanumerical ASCII characters work!
-1/a/300/foo/bar
+## Seqlinks and identification
+2/1
 
-# If a file has multiple headers and no Folgezettel, but other ztsch syntax, it is interpreted as a single node
+Seqlinks, when present, are the primary ID of a node - and their header becomes an alias. @[[Seqlinks]] can be used as [[Regular links]]@, and must be written in full, e.g [[1/2]].
 
-# You can place multiple nodes into a single document too!
-1/b
+2/2
+# Structure and syntax
 
-## Marked headers are interpreted as nodes themselves, fully independent from others, even if they are subheadings
-1/c
+Seqlinks can be placed before or after a header, as long as the seqlink line is adjacent to the header line. A seqlink is the *full path*: @[[2/2]] is not [[2]]@.
 
-## But unmarked headers and its contents are interpreted as being part of the top node
+### Allowed characters and elements
+2/abc/[Random node](random-node.md)
 
-@[[1/b]] is not equal to [[1/c]]@
+Alphanumerical strings of any length and/or actual links can be used. The / character determines the start and end of a node. If [[Random node]] has seqlink [[2/abc/1]], "Random node" is its header used as an alias.
 
-@[[1/b]] does not contain [[1/c relinks]]@
+2/3
+### Nesting and header hierarchy
 
-@[[Sequential links]] are aliased as [[Links]]@
+A whole file can have multiple nodes. @[[Seqlinks]] make [[Nodes]]@ out of an ordinary header. Headers without seqlinks are parsed as part of their parent header.
+
+#### Rellinks and seqlinks
+2/3/a
+
+@[[Rellinks]] belong to [[Nodes]]@. A rellink inside a marked header belongs to it. Rellinks in an unmarked header belong to the parent header of the latter.
+
+## An example
+
+@[[This rellink]] belongs to [[2]]@. @[[This rellink]] does not belong to [[2/3/a]]@
 ```
 
 ### Agnostic tools
