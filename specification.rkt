@@ -1,14 +1,12 @@
 #lang racket
 
-; Data types
+;; Data types
 
-(struct node (nodeid nodetitle nodehdrnumber) #:transparent)
-(struct seqlink (seqid seqtarget) #:transparent)
-(struct reglink (linkalias nodetarget) #:transparent)
+(struct seqid (path) #:transparent)
+(struct extlink (extalias exttarget) #:transparent)
+(struct wikilink (wikialias wikitarget) #:transparent)
 (struct rellink (sbjct predct objct) #:transparent)
-(struct aliased-rellink (relalias rellinktarget) #:transparent)
-
-
-
-
+(struct relalias (aliastext targetrel) #:transparent)
+(struct nestedrellinks (aliasnest nestedrellinks parenttargetrel) #:transparent) 
+(struct node (id title hdrlevel filepath content links) #:transparent)
 
