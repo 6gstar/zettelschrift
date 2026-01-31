@@ -1,10 +1,14 @@
 #lang racket
 
-; Canonical objects
+; Data types
 
-(struct rellink (subj predct objct) #:transparent)
-(struct aliased-rellink (relalias rellink) #:transparent)
-(struct seqlink (id headertitle) #:transparent)
-(define (make-rellink subj predct objct) (rellink subj predct objct)
-(define (make-aliased-rellink relalias rellink) (aliased-rellink relalias rellink))
-(define (make-seqlink id headertitle) (seqlink id headertitle))
+(struct node (nodeid nodetitle nodehdrnumber) #:transparent)
+(struct seqlink (seqid seqtarget) #:transparent)
+(struct link (linkalias nodetarget) #:transparent)
+(struct rellink (sbjct predct objct) #:transparent)
+(struct aliased-rellink (relalias rellinktarget) #:transparent)
+
+
+
+
+
