@@ -1,0 +1,149 @@
+@1
+Zettelschrift "Native" Reference 1.0.0
+
+This is the reference for Zettelschrift-Native, a light markup language for personal knowledge management whose data structure is an incidence complex.
+
+@1/1
+Nodes, addresses, and references
+
+Zettelschrift is composed of two primitive elements (nodes and addresses), one composite element (references), and one hidden element, not manipulable by the user (edges). Addresses give nodes identity. Nodes may contain one or more addresses for themselves, references to other nodes' addresses, and free content. Nodes that contain an address for themselves are independent; nodes that do not are dependent. Nodes that represent actual files/streams are real; nodes that do not resolve to any file/stream are virtual.
+
+References between nodes are themselves dependent, virtual nodes. If reified, they become independent nodes; if a file/stream is resolved by them, they become real nodes. References contain edges between addresses.
+
+A Zettelschrift-Native file always starts with an @; hosted Zettelschrift implementations (such as Zettelschrift-Markdown and Zettelschrift-Org) follow the conventions of their hosts. This reference is written in Zettelschrift-Native.
+
+@1/1/1
+Addresses
+
+There are three types of addresses: plain titles, node sequences, and node sectors.
+
+@1/1/1/1
+Plain titles, nodeseqs, nodesects
+
+A node sequence (nodeseq) is the full address of a node: it represents a child node and all its predecessors, from first to last, with their addresses separated by /'s; it directly mimics Niklas Luhmann's way of organizing his Zettelkasten by using Folgezettel ("sequence of cards").
+
+There are no limits to a nodeseq's length.
+
+A node sector (nodesect) is a label that conveniently also denotes that a section of prose is in fact a child node of node that contains it. This paragraph can be labeled as a node sector by breaking a line and adding this:
+@(1)
+
+Or, without line breaks, %by enclosing prose between %...%, hitting space, and adding this:% @(2). After the last ), one can continue writing in regular prose. %...% marks the content to be assigned, and @(2) marks the nodesect target.
+
+The previous nodesects' nodeseqs are, respectively, 1/1/2/1 and 1/1/2/2.
+
+A node can also be labeled with a plain title, as long as it does not contain any symbols employed by Zettelschrift notation. Plain titles can also appear inside nodeseqs: Plain titles, nodeseqs, nodesects/1 represents the same nodesect that 1/1/2/1 does.
+
+Plain titles receive automatically nodeseqs composed of integer numbers. Their counting is based on the order that they were written (i.e. if not careful, you can break references by moving the position of a node which only has a plain title.
+
+Plain titles, however, cannot be repeated. A node 2/1 and another node 2/2 cannot have the same “I’m a node” title. If a plain title uses any symbol that Zettelschrift uses, that symbol must be escaped with \
+
+Nodeseqs require that a full path is written after the first @, and that it matches anything that came before it (i.e. I cannot write 1/1/1/a/1, unless the node "3" also has the plain title "a").
+ 
+@1/1/1/2
+"Aliasing"
+Multiple labels
+Multiplicity of labels
+Aa/Bb/Cc
+All paths/3000/lead to/Rome
+
+A node can contain multiple addresses. The only limit is: a child cannot be any of its parents (and as such, cannot be addressed as them).
+
+@1/1/2
+References
+Zettelschrift is a hypergraph with prose as natural as writing marginalia on paper
+
+References are how Zettelschrift implements its equivalent of links in other lightweight markup languages. However, they do not work in the same way.
+
+A reference creates an edge between the current node and a virtual node. The latter contains an address written in special notation, but which is fully equivalent to a scoped nodeseq: a node sequence that only exists from the point of view of the reference.
+
+This allows for a number of interesting things not present in most popular light markup languages, while still being partially degradable to very familiar notation (wikilinks, and link attributes in the style of Semantic MediaWiki and Obsidian's Dataview and Breadcrumbs plugins. While this isn't important for native Zettelschrift, it is important for [[Zettelschrift - Markdown]]
+
+[[1]] is a reference. Its structure is:
+
+1/1/2 --edge-> Virtual node [[1]] =
+= Virtual node --edge-> 1
+
+[[1::2]] is a reference. Its structure is:
+
+1/1/2 --edge--> Virtual node [[1::2]] =
+= Virtual node --edge--> 1 --edge--> Virtual node [[2]] =
+= Virtual node --edge--> 2
+
+[[1::2::3::4::Nodes, addresses, and references]] is a reference. Its structure is:
+
+1/1/2 --edge--> Virtual node [[1::2::3::4::Nodes, addresses, and references]] =
+= Virtual node --edge--> 1 --edge--> Virtual node [[2::3::4::Nodes, addresses, and references]] =
+= Virtual node --edge--> 2 --edge--> Virtual node [[3::4::Nodes, addresses, and references]] =
+= ... =
+= Virtual node --edge--> Nodes, addresses, and references
+
+[[You can alias a reference in familiar wikilink notation|1::2]]. But something better can be done: %the same notation for the prose of a nodesect can be used to alias a reference% [[3]].
+
+You can also make explicit that a nodesect contains a reference, like this:
+@(1) [[4]]
+
+%Or like  this% @(2) [[5]]. This is interpreted as 1/1/2/2 --edge--> Virtual node [[5]] = ...
+
+@1/1/3
+Reification
+Zettelschrift is a LISP without functions and procedures
+
+If Zettelschrift already treats references as virtual nodes, and references like [[A::B::C::D]] are recursive sequences of virtual nodes, it should only follow that you can purposefully add a reference inside a reference:
+
+[[Y::is an annotation about::[[A::B::C::D]]]]. This can be useful, for example, to comment about a relationship itself:
+
+[[[[Zettelschrift::is useful]]::is questionable]]. This means something different than [[Zettelschrift::is useful::is questionable]].
+
+@1
+
+By accident, one may end up writing a node, or a nodesect, that has the same ID/plain title of an existing one. Zettelschrift, to maintain the rule of “multiple addresses for a node” while keeping identifiers unique (i.e. 1/1 can also be 10/1, but no real nodes that are both 1/1 are allowed), parses the case of two nodes with the same address as an appending.
+
+Appending follows all the rules that disallow circularity. When the reduced @@... notation is used for child nodes in the appending, the child nodes are counted as coming after any other siblings, and numbered accordingly with integers.
+
+All of this also means that you can append purposefully. All you need to do is to write a node with a nodeseq, plain title, or nodesect that already exists.
+
+The Zettelschrift parser uses date of creation to decide which instance of a node was the first one to exist. If this is not available, it will calculate this through the order inside of a document, and if this is also not available, by the order that any documents are inputed for the parser.
+
+@1/2
+Granular appending to real and virtual nodes with %...%
+Virtual-dependent to real-independent node transformation with &[[...]]
+
+You may have noticed that %...% serves many functions. You may also wonder if the fact that a reference is a virtual node means that it can have free content or even be transformed into a real, independent node. Zettelschrift tries to solve the problem that people like Ted Nelson found in our most popular implementations of hypertext - if links live inside a single document, I lose connections between documents if I delete or modify the source document.
+
+%...% is a granular appending notation for nodesects and references. It means "append this free content to a node indicated after the %...%".
+
+As such, all cases below, already shown before, although serving apparently different functions for the user, are formally the same thing:
+
+[[Content|A]] and %Content% [[A]] -> aliasing a reference.
+%Content% (10) -> creating a nodesect and appending free content to it, or appending content to an existing one.
+%Content% (10) [[A]] -> aliasing a reference whose source is (10).
+
+If for some reason, %...% is used without a target, the Zettelschrift parser will simply ignore the surrounding % symbols and parse the content normally. 
+
+Now, let's say we need to have real nodes that represent our references, to avoid linkrot. %I've just created this reference. 1/2 after & indicates the original source of the reference, and the reference comes latter% [[A::B::C::D]]. ztsch-tools can do this automatically, or a user may manually do this by creating the needed file. The notation inside that file for a real, independent node for a reference, automatically or manually, is:
+
+```
+&[[1/2]] [[A::B::C::D]]
+An actual file for this reference
+1000/1/1/1/Yes, you can add a nodeseq to it
+
+I've just created this reference. 1/2 after & indicates the original source of the reference, and the reference comes latter
+```
+
+The fact that the content inside %...% is appended has another useful consequence: free content is recursive. Granular appending allows any elements of Zettelschrift, including more granular appending, nested inside itself.
+
+%This granular appending %containing a lot of nesting [[A::X]]% [[B]] demonstrates recursion% @(1) [[C::D::Y]]
+
+This is equivalent to:
+
+```
+&[[1/2/1]] [[C::D::Y]]
+A very recursive reference
+
+This granular appending %containing a lot of nesting [[A::X]]% [[B]] demonstrates recursion.
+```
+
+@1/3
+License
+
+Zettelschrift © 2026 by Jayu Eleuthéria is licensed under Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/4.0/
