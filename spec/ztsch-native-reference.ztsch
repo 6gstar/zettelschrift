@@ -128,15 +128,15 @@ You may have noticed that %...% serves many functions. You may also wonder if th
 As such, all cases below, already shown before, although serving apparently different functions for the user, are formally the same thing:
 
 [[Content|A]] and %Content% [[A]] -> aliasing a reference.
-%Content% (10) -> creating a nodesect and appending free content to it, or appending content to an existing one.
-%Content% (10) [[A]] -> aliasing a reference whose source is (10).
+%Content% @(10) -> creating a nodesect and appending free content to it, or appending content to an existing one.
+%Content% @(10) [[A]] -> aliasing a reference whose source is (10).
 
 If for some reason, %...% is used without a target, the Zettelschrift parser will simply ignore the surrounding % symbols and parse the content normally. 
 
 @1/3
 Reference nodes
 Virtual to real node transformation
-Zettelschrift does not make a hard distinction between nodes and references
+Zettelschrift does not make a hard distinction between nodes, node sequences, and references
 Zettelschrift is structured with linkrot avoidance in mind
 
 [[[[Reification]]]] addresses the need of adding semantic information to a reference in a structured way. %Granular appending also solves the problem of adding the same information in a non-structured way% [[Granular appending]]. However, you may wish to not clutter your prose with this, and add this information on a file dedicated to commenting on [[a particular::reference]].
@@ -170,6 +170,8 @@ A very recursive reference
 This granular appending %containing a lot of nesting [[A::X]]% [[B]] demonstrates recursion.
 ```
 
+One of the consequences of this is that you can devise automatic or manual ways to avoid linkrotting by keeping separate files that describe your references. If you by accident delete a reference where it was created, as long as you still have a reference node for it, it will still exist as a parseable entity.
+
 @1/3/2
 Reference nodes are just nodes like any other
 All paths lead to appending
@@ -185,19 +187,115 @@ The @@[[1/3/1]] [[C::D::Y]] notation exists because you cannot write reified ref
 This means that the opposite is true: @@[[1]] [[1/1::1/1/1]] is the same as {{1/1/1}}. @@[[1]] [[1/1/1]], however, is different: it is a reference made by [[1]] directly to [[1/1/1]]. If you have a good memory, you may remember how we've just made an appending to [[1]] and even left there a reference to [[1/1/1]]. 
 
 @1/3/3
+Universal reference nodes
+
+One may wish to create a reference node without having an "origin" for it, and to treat all other reference nodes dealing with the same reference as specific cases of it (i.e. @@[[1/3/1]] [[C::D:Y]] should mean "[[C::D::Y]] in the context of [[1/3/1]]"). This can be done as such:
+
+```
+@@[[C::D::Y]]
+
+This reference node's content will be appended to all reference nodes for C::D::Y "in the context of" an origin node. Because @@[[1/3/1]] [[C::D::Y]] means the same as @1/3/1/A very recursive reference, and universal reference nodes represent an appending, tthis implies that universal reference nodes' contents do not create redundant, duplicate references. If I add [[a random reference]] here, this simply means @@[[C::D::Y]] [[a random reference]], and [[C::D::Y]] is now an origin node
+```
+
+@1/3/4
 Backlinks in Zettelschrift
 Contemporary PKM software users love their backlinks
 
 This is also how Zettelschrift allows backlinks. To the ztsch-tools (and any other full implementation of an environment for Zettelschrift), reference nodes always exist virtually, as temporary data created when parsing nodes and its references. Because references are just very special child nodes of the parent nodes that contain them, backlinking means simply traversing a nodeseq from right-to-left, instead of left-to-right. For a reference, this means traversing its reference node right-to-left. Through, for example, ztsch-html, the Zettelschrift static site generator, backlinks can be added and updated somewhere in the HTML file produced by it.
 
 @1/4
-Special syntax for node sequences
-Zettelschrift allows writing ToCs and "Structure Notes" with readable syntax while never using a different logic for them
+Sequence nodes
+Table of Contents, "Structure Notes", etc.
 There is no element in Zettelschrift that cannot be manipulated as a simple nodeseq/reference
+A reverse example of how all complex Zettelschrift syntatic elements can be reduced to its simplest ones
 
+One may wish to write indexes, ToCs, or what the contemporary Zettelkasten enthusiasts call "Structure Notes". In other words: you may wish to write actual tree representations of nodes, instead of working with linear sequences. Many current PKM tools either implement this as a separate function with no connection to other entities such as links/wikilinks, or do not implement anything at all, leaving the task of writing and updating ToCs to the user. Visualization is also restricted to reading the actual ToC, and niceties such as graph visualization either do not exist, or can only exist while ignoring the actual structure of your ToC node.
 
+Zettelschrift also implements a special syntax for this usecase:
 
-@1/3
+```
+=@Zettelschrift's Formal Elements and Syntatic Representations of Them
+You can write regular content here. The actual ToC is below:
+
+==@Formal Elements
+If you were to write something like "page 9", this would go here. It is treated as an appending to the Formal Elements node.
+===@Nodes
+==@Syntatical Functions
+===@Addressing
+====@Node Sequences
+====@Node Sectors
+====@Plain Titles
+===@Referencing
+====@Reification
+====@Simple Reification
+====@Reference Nodes
+====@Sequence Nodes
+===@Appending
+====@Node appending
+====@Granular appending
+```
+
+Now, to describe how this is a special notation for something that can already be done in a more direct way, let's work with a simpler example:
+
+```
+=@100
+
+==@A
+==@a
+==@b
+=@B
+==@x
+==@y
+```
+
+This sequence node represents the same thing as writing the following separate reference nodes:
+
+```
+@@[[100]]
+
+@@[[100]] [[A]], or @@[[100::A]]
+
+@@[[A]] [[a]], or @@[[A::a]]
+
+@@[[A]] [[b]]
+
+@@[[B]] [[x]]
+
+@@[[B]] [[y]]
+```
+
+Which also is the same thing as:
+
+```
+@100
+
+[[A::a]]
+[[A::b]]
+[[B::x]]
+[[B::y]]
+```
+
+Which means the same as:
+
+```
+@100
+
+@100/A
+
+@100/A/a
+
+@100/A/b
+
+@100/B
+
+@100/B/x
+
+@100/B/y
+```
+
+We've come full circle.
+
+@1/5
 License
 
 Zettelschrift © 2026 by Jayu Eleuthéria is licensed under Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/4.0/
