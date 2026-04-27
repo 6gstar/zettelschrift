@@ -1,301 +1,266 @@
-+@1
-Zettelschrift "Native" Reference 1.1.0
++@Zettelschrift "Native" Reference 2.0.0
+=1
 
-This is the reference for Zettelschrift-Native, a light markup language for personal knowledge management whose data structure is an incidence complex.
+This is the reference for the "Native" (unhosted) version of Zettelschrift, a light markup language for personal knowledge management whose data structure is an incidence complex.
 
-@1/1
-Nodes, addresses, and references
+@Primitive elements and syntatic functions
+=1/1
 
-Zettelschrift is composed of two primitive elements (nodes and addresses), one composite element (references), and one hidden element, not manipulable by the user (edges). Addresses give nodes identity. Nodes may contain one or more addresses for themselves, references to other nodes' addresses, and free content. Nodes that contain an address for themselves are independent; nodes that do not are dependent. Nodes that represent actual files/streams are real; nodes that do not resolve to any file/stream are virtual.
+Zettelschrift is composed of nodes and freeform content as its primitive elements, and of containment and storage as its primitive relationships.
 
-References between nodes are themselves dependent, virtual nodes. If reified, they become independent nodes; if a file/stream is resolved by them, they become real nodes. References contain edges between addresses.
+A node is anything that can be parsed as an independent addressable element. Containment is the action of a node addressing other nodes. Freeform content is anything that is not parseable as an independent addressable element. Storage is the action of attaching freeform content to a node.
 
-A Zettelschrift-Native file always starts with an @; hosted Zettelschrift implementations (such as Zettelschrift-Markdown and Zettelschrift-Org) follow the conventions of their hosts. This reference is written in Zettelschrift-Native.
+From the point of view of Zettelschrift's formal data structure, all nodes exist at any time. From the point of view of a user writing and storing files with Zettelschrift, nodes can be virtual or real. A virtual node has no file that represents what is contained by it. A real node does.
 
-@1/1/1
-Addresses
+A real node is written inside a file as such:
 
-There are three types of addresses: plain titles, node sequences, and node sectors.
+```
+@The header's semantic address
+=A header positional address
+=Another header positional address
 
-@1/1/1/1
-Plain titles, nodeseqs, nodesects
+Freeform content and [[various other]] {{Zettelschrift}} [[body::elements]]. Zettelschrift requires an empty line between the header and the freeform content/other Zettelschrift elements.
 
-A node sequence (nodeseq) is the full, main address of a node: it represents a child node and all its predecessors, from first to last, with their addresses separated by /'s; it directly mimics Niklas Luhmann's way of organizing his Zettelkasten by using Folgezettel ("sequence of cards").
+```
 
-There are no limits to a nodeseq's length.
+You can choose to not parse a content by ```enclosing it with backticks. Line breaks are allowed, as shown previously```. You can escape a character by placing \ before it.
 
-A node sector (nodesect) is a reduced, relative form of a nodeseq, which can conveniently denote that a section of free content is in fact a child node of the node that contains it. This paragraph can be labeled as a node sector by breaking a line and adding this:
-@(1)
+Zettelschrift uses syntatic functions to represent its primitive elements and the composite elements built from them.
 
-Or, without line breaks, %by enclosing prose between %...%, hitting space, and adding this:% @(2). After the last ), one can continue writing in regular prose. %...% marks the content to be assigned, and @(2) marks the nodesect target.
+@Addressing
+=1/1/1
 
-The previous nodesects' nodeseqs are, respectively, 1/1/2/1 and 1/1/2/2.
+Addressing is the simplest way in which nodes are represented. A node has at least either one, and only one semantic address (plain title), and/or one or more positional addresses (nodeseqs). An exception is made for sequence nodes, which have their own special unique address and are described later in this reference. Granular addresses (nodesects), based upon either semantic or positional addresses, can also be used.
 
-A node can also be labeled with a plain title, as long as it does not contain any symbols employed by Zettelschrift notation. Plain titles can also appear inside nodeseqs: Plain titles, nodeseqs, nodesects/1 represents the same nodesect that 1/1/2/1 does.
+A node exists if, and only if, it has been addressed in some way. Addressing can be either direct (through writing a real node with a header), or indirectly through sequencing, reification, described later.
 
-Plain titles receive automatically nodeseqs composed of integer numbers. Their counting is based on the order that they were written (i.e. if not careful, you can break references by moving the position of a node which only has a plain title.
+Different nodes cannot have the same semantic address. A node can have multiple positional addresses, but different nodes cannot have the same positional address.
 
-Plain titles, however, cannot be repeated. A node 2/1 and another node 2/2 cannot have the same “I’m a node” title. If a plain title uses any symbol that Zettelschrift uses, that symbol must be escaped with \
+@Semantic and positional addresses
+=1/1/1/1
+=4692/Mixed address/3
 
-Nodeseqs require that a full path is written after the first @, and that it matches anything that came before it (i.e. I cannot write 1/1/1/a/1, unless the node "3" also has the plain title "a").
+The semantic address of a node is a unique plain title assigned to it. In the header, it is written by placing an @, and then the actual plain title. The plain title cannot contain an @ as either its first or last character, nor + as its first character, nor / at any position, nor :: at any position, neither  [[ or ]] or {{ or }} at any position. A node can have one, and only one semantic address. Diferent nodes cannot have the same semantic address
+
+A positional address of a node represents it through its full containment hierarchy, i.e. the full sequence of nodes that lead to it. It is written on the line just below the semantic address, by adding an =, and then the actual positional address. Each node in the sequence is separated through a /. It can be written either as an absolute numeric value (e.g. ```1/1/1/``` and ```1/1/2```, which are siblings of each other, and children of ```1/1```), the mere sequencing of semantic addresses (e.g. ```Zettelschrift "Native" Reference 2.0.0/Primitive elements and syntatic functions/Addressing/Semantic and positional addresses```), or a mixture of both notations (e.g. ```1/1/Addressing/Semantic and positional addresses```).
+
+A node can have multiple positional addresses (i.e. it can have multiple parents), but different nodes cannot share the same exact positional address. Each additional positional address must be added as a newline in the header.
+
+Positional addresses made from semantic addresses can be cyclic (i.e. ```=Mixed address/Addressing/1/Mixed address``` is perfectly valid). However, tautologies (i.e. ```=A/A```. or ```=A/A/A/B/B/B/B/A/A/A/A```) are not valid, and will be interpreted as redundant notation (i.e. the previous examples are equivalent to ```=A``` and ```A/B/A``` respectively).
+
+There are no limits to a positional address' length. Addressing is creating: assigning a positional address to a node is already creating the containment relationships described by it.
+
+@Sectoring
+=1/1/2
+
+Sectoring is a representation of a node and its freeform content/body elements form in a more reduced fashion than the regular header-body structure of a real node. It can conveniently add granularity by transforming what would otherwise be freeform content into a node itself. This paragraph can be transformed into a sector node by adding this after a line break:
+=1=
+
+Or this:
+@A random sector@
+
+Or, without line breaks, %by enclosing prose between %...%, hitting space, and adding this:% =2=. %Or this:% @Another random sector@.
+
+A sector address can represent either a semantic address through @...@ notation, or a positional address through =...=. Sector addresses that are made from semantic addresses are independent from their neighbouring nodes. Sector addresses made from positional addresses, however, serve the function of a relative positional address, i.e. a positional sector address is the child of the last addressed (through a header) node before it.
+
+The previous positional sector addresses' equivalent positional addresses  are, respectively, 1/1/2/1 and 1/1/2/2.  %The same freeform content can be assigned to multiple nodeseqs, like this:% =3= =4/10/1= @Yet another random sector@. Positional sector addresses accept the full syntax for regular positional address, but in this case, the ```=4/10/1=``` sector address is equivalent to the positional address 1/1/2/4/10/1, not to 4/10/1. 
+
++@Appending
+=1/1/3
+
+Appending is how nodes and sector nodes whose addresses already exist are represented. Nodes with identical semantic or positional addresses aren't allowed; however, Zettelschrift solves this not through an error, but by treating all instances of a repeated address as if they were a purposeful representation of a single node in a fragmentary fashion.
+
+@Appending
+=1/1/3
+
+Any tool that interprets Zettelschrift will parse, interpret, store, and export the ```1/1/3``` node as:
+
+```
+@Appending
+=1/1/3
+
+Appending is how nodes whose addresses already exist are represented. Nodes with identical addresses aren't allowed; however, Zettelschrift solves this not through an error, but by treating all instances of a repeated address as if they were a purposeful representation of a single node in a fragmentary fashion.
+
+Any tool that interprets Zettelschrift will parse, interpret, store, and export the ```1/1/3``` node as:
+
+```...```
+
+Sector nodes can also cause appending.
+
+```
+
+The same would apply for something like this: %Sector nodes can also cause appending.% @Appending@
+
+@Appending priority
+=1/1/3/1
+
+Appending priority (i.e. which instance of a node should be treated as the one to receive appending) can be indicated manually by adding a + before any header marker. You may have already noticed at the start of this file. If this is not done, any Zettelschrift parser will use the date of creation to decide which instance of a node was the first one to exist. If this is not available, it will calculate this through the order inside of a document, and if this does not allow a decision, it will use the alphabetical order of the files containing Zettelschrift text.
+
+@Sequencing
+=1/1/4
+
+Sequencing is how containment relationships, existing or new, can themselves be represented. A sequence is an (a priori) virtual node that represents the containment relationship between an origin node (i.e. the node in which the sequence notation was written) and a destiny node (i.e. the node contained by the origin node, whose containment is represented by the sequence node). Sequencing abstracts the functions of both regular and semantic hypérlinks/wikilinks into a single element, while expanding their possibilities.
+
+A sequence node can take both positional and semantic addresses for their destiny node. A sequence node is written as [[...]], e.g. [[1/1]], [[Appending priority]], [[Addresses]], etc.
+
+[[...]] means:
+
+```
+@Sequencing --sequence virtual node--> @...
+```
+
+Or, more explicitly:
+
+```
+@Sequencing --containment--> [[...]] sequence node --containment--> @...
+```
+
+@Composite destiny node
+=1/1/4/1
+
+Sequence nodes can take a composite destiny node, using :: as a separator for different addresses of the nodes to be composed, e.g. [[1/1::Sectoring::Reification]]. There is no limit for the number of nodes to be composed. 
+
+[[10/2/3::B::C]] means:
+
+```
+@Composite destiny node --containment--> [[10/2/3::B::C]] virtual sequence node -containment--->
+--> @10/2/3 --------------containment--> [[B::C]] virtual sequence node ---------containment--->
+--> @B -------------------containment--> [[C]] virtual sequence node ------------containment---> @C
+```
+
+@Real sequence node and sequence address
+=1/1/4/2
+
+A sequence node is by default a virtual node. However, a sequence node can be transformed automatically (through any Zettelschrift tools) or manually into a real node.
+
+A real sequence node must be written either like this:
+
+```
+&Real sequence node& [[Sequencing]]
+@All addressing rules of regular nodes apply
+=25/in the very
+=24/same way
+
+The header of a real sequence node includes its origin and its destiny node addresses, in the format ```&Origin node& [[Destiny node]]```. This is a special address called the sequence address. The inclusion of headers with a semantic address and positional addresses is optional, but allowed. Freeform content can be added to a real sequence node's body too. {{Zettelschrift}} [[body::elements]] can equally be added.
+```
+
+Or as a sector node: %This is a sector node that is also actually a sequence node.% =[[10/2]]=. By adding =[[ and ]]=, the dual status of the sector as a sector node is represented.
+
+@Real independent sequence node
+=1/1/4/2/1
+
+A real independent sequence node is the representation of a sequence node appending: its content is appended to all sequence nodes that share the same destiny node.
+
+It must be written either like this:
+
+```
+&[[Sequencing]]&
+@All addressing rules of regular nodes apply
+=26/in the very same way
+
+Semantic addresses are allowed, but if this causes an appending to a node that isn't a sequence node, the sequence node will take priority, even if the non-sequence node was marked with + as the primary instance of the node.
+```
+
+Or like this: %This is a sector node that is also actually an independent sequence node.% @[[20/4]]@. By adding @[[ and ]]@, the dual status of the sector as an independent sector node is represented.
+
+@Reification
+=1/1/4/3
+
+Reification is how sequencing can represent other instances of sequencing: sequence nodes can themselves be used as destiny nodes, or for making composite destiny nodes.
+
+Reification is done simply by writing a sequencing inside another sequencing, e.g. [[demonstrates::[[Zettelschrift::is::recursive]]]], which means:
+
+```
+@Reification --> [[demonstrates::[[Zettelschrift::is::recursive]]]] -->
+--> @demonstrates --------------> &demonstrates& [[Zettelschrift::is::recursive]]
+
+&demonstrates& [[Zettelschrift::is::recursive]] real sequence node --->
+--> @Zettelschrift --------------> [[is::recursive]] ----------------->
+--> @is -------------------------> [[recursive]] ---------------------> @recursive
  
-@1/1/1/2
-Multiple labels
-Multiplicity of plain text addresses
-All paths/lead to/Rome
+```
 
-A node can contain multiple addresses, indicated as adjacent lines after the first @address. The only limit is: a child cannot be any of its parents (and as such, cannot be addressed as them).
+@Composite destiny nodes and reification inside of a sequence address
+=1/1/4/3/1
 
-@1/1/2
-References
-Zettelschrift is a hypergraph with prose as natural as writing marginalia on paper
+Composite destiny nodes and reification can be represented in real sequence nodes. 
 
-References are how Zettelschrift implements its equivalent of links in other lightweight markup languages. However, they do not work in the same way.
+The second step of a previous example,
 
-A reference creates an edge between the current node and a virtual node. The latter contains an address written in special notation, but which is fully equivalent to a scoped nodeseq: a node sequence that only exists from the point of view of the reference.
+```
+@Composite destiny node --containment--> [[10/2/3::B::C]] virtual sequence node -containment--->
+--> @10/2/3 --------------containment--> [[B::C]] virtual sequence node ---------containment--->
+--> @B -------------------containment--> [[C]] virtual sequence node ------------containment---> @C
+```
 
-This allows for a number of interesting things not present in most popular light markup languages, while still being partially degradable to very familiar notation (wikilinks, and link attributes in the style of Semantic MediaWiki and Obsidian's Dataview and Breadcrumbs plugins. While this isn't important for native Zettelschrift, it is important for [[Zettelschrift - Markdown]]
+can be represented in a sequence address as:
 
-[[1]] is a reference. Its structure is:
+```
+&[[10/2/3::B::C]]& [[B::C]]
+``` 
 
-1/1/2 --edge-> Virtual node [[1]] =
-= Virtual node --edge-> 1
+And the second step of another previous example,
 
-[[1::2]] is a reference. Its structure is:
+```
+@Reification --> [[demonstrates::[[Zettelschrift::is::recursive]]]] -->
+--> @demonstrates --------------> &demonstrates& [[Zettelschrift::is::recursive]]
 
-1/1/2 --edge--> Virtual node [[1::2]] =
-= Virtual node --edge--> 1 --edge--> Virtual node [[2]] =
-= Virtual node --edge--> 2
-
-[[1::2::3::4::Nodes, addresses, and references]] is a reference. Its structure is:
-
-1/1/2 --edge--> Virtual node [[1::2::3::4::Nodes, addresses, and references]] =
-= Virtual node --edge--> 1 --edge--> Virtual node [[2::3::4::Nodes, addresses, and references]] =
-= Virtual node --edge--> 2 --edge--> Virtual node [[3::4::Nodes, addresses, and references]] =
-= ... =
-= Virtual node --edge--> Nodes, addresses, and references
-
-[[You can alias a reference in familiar wikilink notation|1::2]]. But something better can be done: %the same notation for the prose of a nodesect can be used to alias a reference% [[3]].
-
-You can also make explicit that a nodesect contains a reference, like this:
-@(1) [[4]]
-
-%Or like  this% @(2) [[5]]. This is interpreted as 1/1/2/2 --edge--> Virtual node [[5]] = ...
-
-[[Zettelschrift::is useful for::Semantic linking]], in a way that is both practical to query, easily parseable by a computer, and natural enough for a human to write and read.
-
-@1/1/2/1
-Reification
-Zettelschrift is a LISP without functions and procedures
-
-If Zettelschrift already treats references as virtual nodes, and references like [[A::B::C::D]] are recursive sequences of virtual nodes, it should only follow that you can purposefully add a reference inside a reference:
-
-[[Y::is an annotation about::[[A::B::C::D]]]]. This can be useful, for example, to comment about a relationship itself:
-
-[[[[Zettelschrift::is useful]]::is questionable]]. This means something different than [[Zettelschrift::is useful::is questionable]].
-@1/1/2/2
-Node sequence to reference transformation
-Nodeseqs can be reified as actual sequences
-
-If references are scoped nodeseqs, it should follow that instead of using a nodeseq as an address for a single node, one may want to comment something about the entire sequence of nodes leading to the last one. The most direct way to do that is, for example, by writing [[1::1/1::1/1/1]] to transform 1/1/1 into an explicit, multiple argument reference. However, this is quite unpractical. Zettelschrift offers a special notation for doing that:
-
-{{1/1/1}}. As such:
-
-[[{{1/1/1}}::is the same as::[[1::1/1::1/1/1]]]].
-
-[[{{1/1/1}}::is not the same as::1/1/1]].
-
-@1
-
-By accident, one may end up writing a node, or a nodesect, that has the same nodeseq/plain title of an existing one. Zettelschrift, to maintain the rule of “multiple addresses for a node” while keeping identifiers unique (i.e. 1/1 can also be 10/1, but no real nodes that are both 1/1 are allowed), parses the case of two nodes with the same address as an appending.
-
-Appending follows all the rules that disallow circularity.
+&demonstrates& [[Zettelschrift::is::recursive]] real sequence node --->
+--> @Zettelschrift --------------> [[is::recursive]] ----------------->
+--> @is -------------------------> [[recursive]] ---------------------> @recursive
  
-All of this also means that you can append purposefully. All you need to do is to write a node with a nodeseq, plain title, or nodesect that already exists.
+```
 
-If you did not notice it yet, this is an appending to the very first node contained in this file, as it has the same nodeseq, 1. References made here, such as [[1/1/1]], are now also part of the references made by 1.
+can be represented in a sequence address as:
 
-Now, you may have a file that contains what should be interpreted as the first instance of a node. You can indicate this manually by adding a + before @, which you may have already noticed at the start of this file. If this is not done, the Zettelschrift parser will use the  date of creation to decide which instance of a node was the first one to exist. If this is not available, it will calculate this through the order inside of a document, and if this does not allow a decision, it will use the alphabetical order of the files containing Zettelschrift text.
+```
+&[[demonstrates::[[Zettelschrift::is::recursive]]]]& [[Zettelschrift::is::recursive]]
+```
+
+@Positional sequence
+=1/1/4/4
+
+A positional sequence represents a composite destiny node made of all the nodes of a positional address. It is written as {{...}}, e.g. {{1/1/1}}.
+
+{{1/1/1}} is the same as [[1::1/1::1/1/1]].
+
+@Sequence list
+=1/1/4/5
+
+A sequence list is an alternative notation for sequencing. It allows writing complex, reified sequencing in a more natural and readable fashion. It abstracts the functions of ToCs/indexes.
+
+```
+@Zettelschrift's Syntax
+=0
+
+*[[Primitives]]
+**[[Elements]]
+***[[Nodes]]
+***[[Freeform content]]
+*[[Syntatic functions]]
+**[[Addressing]]
+**[[Sectoring]]
+**[[Appending]]
+**[[Sequencing]]
+```
+
+A sequence list such as:
+
+```
+@A
+=100
+
+*[[B]]
+**[[C::D]]
+**[[28]]
+***[[E::[[F::G]]]]
+*[[28]]
+**[[29]]
+```
+
+contains the sequence nodes ```[[B::[[C::D]]]]```, ```[[B::28::[[E::[[F::G]]]]]]```, and ```[[28::29]]```.
 
 @1/2
-Granular appending to real and virtual nodes with %...%
-Virtual-dependent to real-independent node transformation with &[[...]]
-
-You may have noticed that %...% serves many functions. You may also wonder if the fact that a reference is a virtual node means that it can have free content or even be transformed into a real, independent node. Zettelschrift tries to solve the problem that people like Ted Nelson found in our most popular implementations of hypertext - if links live inside a single document, I lose connections between documents if I delete or modify the source document.
-
-%...% is a granular appending notation for nodesects and references. It means "append this free content to a node indicated after the %...%".
-
-As such, all cases below, already shown before, although serving apparently different functions for the user, are formally the same thing:
-
-[[Content|A]] and %Content% [[A]] -> aliasing a reference.
-%Content% @(10) -> creating a nodesect and appending free content to it, or appending content to an existing one.
-%Content% @(10) [[A]] -> aliasing a reference whose source is (10).
-
-If for some reason, %...% is used without a target, the Zettelschrift parser will simply ignore the surrounding % symbols and parse the content normally. 
-
-@1/3
-Reference nodes
-Virtual to real node transformation
-Zettelschrift does not make a hard distinction between nodes, node sequences, and references
-Zettelschrift is structured with linkrot avoidance in mind
-
-[[[[Reification]]]] addresses the need of adding semantic information to a reference in a structured way. %Granular appending also solves the problem of adding the same information in a non-structured way% [[Granular appending]]. However, you may wish to not clutter your prose with this, and add this information on a file dedicated to commenting on [[a particular::reference]].
-
-ztsch-tools can do this automatically, or a user may manually do this by writing a reference node inside a file. A reference node is a real, independent node. The notation inside that file for a reference node, created automatically or manually, is:
-
-
-```
-@@[[1/3]] [[A::B::C::D]]
-An actual file for this reference
-1000/1/1/1/
-Yes, you can also/add a nodeseq to it
-
-I've just created this reference. 1/2 after & indicates the original source of the reference, and the reference comes latter
-```
-
-If you were to do that automatically, you could have done just this:  %I've just created this reference. 1/2 after & indicates the original source of the reference, and the reference comes latter% [[A::B::C::D]]. 
-
-This is how the Zettelschrift parser interprets granular appending (though not direct node appending: node appending directly adds content to the original node).
-
-The fact that the content inside %...% is appended has another useful consequence: free content is recursive. Granular appending allows any elements of Zettelschrift, including more granular appending, nested inside itself.
-
-%This granular appending %containing a lot of nesting [[A::X]]% [[B]] demonstrates recursion% @(1) [[C::D::Y]]
-
-This is equivalent to:
-
-```
-@@[[1/3/1]] [[C::D::Y]]
-A very recursive reference
-
-This granular appending %containing a lot of nesting [[A::X]]% [[B]] demonstrates recursion.
-```
-
-One of the consequences of this is that you can devise automatic or manual ways to avoid linkrotting by keeping separate files that describe your references. If you by accident delete a reference where it was created, as long as you still have a reference node for it, it will still exist as a parseable entity.
-
-@1/3/2
-Reference nodes are just nodes like any other
-All paths lead to appending
-
-The previous notation exists to help you with understanding the context of a reference, writing its real node in a practical way, and avoiding parsing conflicts when using reification. However, just like {{1/1/1}} is a simpler way to write [[1::1/1::1/1/1]], @@[[1/2/1]] [[C::D::Y]] can also be interpreted as a nodeseq. As such, you could have written the previous example in a more direct way:
-
-```
-@1/3/1/A very recursive reference
-
-The @@[[1/3/1]] [[C::D::Y]] notation exists because you cannot write reified references inside regular nodeseqs - a way to avoid very nasty parsing problems, and to keep your text gracefully degradable when you're not using ztsch-tools. But if a reified reference has a plain title, you can do this.
-```
-
-This means that the opposite is true: @@[[1]] [[1/1::1/1/1]] is the same as {{1/1/1}}. @@[[1]] [[1/1/1]], however, is different: it is a reference made by [[1]] directly to [[1/1/1]]. If you have a good memory, you may remember how we've just made an appending to [[1]] and even left there a reference to [[1/1/1]]. 
-
-@1/3/3
-Universal reference nodes
-
-One may wish to create a reference node without having an "origin" for it, and to treat all other reference nodes dealing with the same reference as specific cases of it (i.e. @@[[1/3/1]] [[C::D:Y]] should mean "[[C::D::Y]] in the context of [[1/3/1]]"). This can be done as such:
-
-```
-@@[[C::D::Y]]
-
-This reference node's content will be appended to all reference nodes for C::D::Y "in the context of" an origin node. Because @@[[1/3/1]] [[C::D::Y]] means the same as @1/3/1/A very recursive reference, and universal reference nodes represent an appending, tthis implies that universal reference nodes' contents do not create redundant, duplicate references. If I add [[a random reference]] here, this simply means @@[[C::D::Y]] [[a random reference]], and [[C::D::Y]] is now an origin node
-```
-
-@1/3/4
-Backlinks in Zettelschrift
-Contemporary PKM software users love their backlinks
-
-This is also how Zettelschrift allows backlinks. To the ztsch-tools (and any other full implementation of an environment for Zettelschrift), reference nodes always exist virtually, as temporary data created when parsing nodes and its references. Because references are just very special child nodes of the parent nodes that contain them, backlinking means simply traversing a nodeseq from right-to-left, instead of left-to-right. For a reference, this means traversing its reference node right-to-left. Through, for example, ztsch-html, the Zettelschrift static site generator, backlinks can be added and updated somewhere in the HTML file produced by it.
-
-@1/4
-Sequence nodes
-Table of Contents, "Structure Notes", etc.
-There is no element in Zettelschrift that cannot be manipulated as a simple nodeseq/reference
-A reverse example of how all complex Zettelschrift syntatic elements can be reduced to its simplest ones
-
-One may wish to write indexes, ToCs, or what the contemporary Zettelkasten enthusiasts call "Structure Notes". In other words: you may wish to write actual tree representations of nodes, instead of working with linear sequences. Many current PKM tools either implement this as a separate function with no connection to other entities such as links/wikilinks, or do not implement anything at all, leaving the task of writing and updating ToCs to the user. Visualization is also restricted to reading the actual ToC, and niceties such as graph visualization either do not exist, or can only exist while ignoring the actual structure of your ToC node.
-
-Zettelschrift also implements a special syntax for this usecase:
-
-```
-=@Zettelschrift's Formal Elements and Syntatic Representations of Them
-You can write regular content here. The actual ToC is below:
-
-==@Formal Elements
-If you were to write something like "page 9", this would go here. It is treated as an appending to the Formal Elements node.
-===@Nodes
-==@Syntatical Functions
-===@Addressing
-====@Node Sequences
-====@Node Sectors
-====@Plain Titles
-===@Referencing
-====@Reification
-====@Simple Reification
-====@Reference Nodes
-====@Sequence Nodes
-===@Appending
-====@Node appending
-====@Granular appending
-```
-
-Now, to describe how this is a special notation for something that can already be done in a more direct way, let's work with a simpler example:
-
-```
-=@100
-
-==@A
-==@a
-==@b
-=@B
-==@x
-==@y
-```
-
-This sequence node represents the same thing as writing the following separate reference nodes:
-
-```
-@@[[100]]
-
-@@[[100]] [[A]], or @@[[100::A]]
-
-@@[[A]] [[a]], or @@[[A::a]]
-
-@@[[A]] [[b]]
-
-@@[[B]] [[x]]
-
-@@[[B]] [[y]]
-```
-
-Which also is the same thing as:
-
-```
-@100
-
-[[A::a]]
-[[A::b]]
-[[B::x]]
-[[B::y]]
-```
-
-Which means the same as:
-
-```
-@100
-
-@100/A
-
-@100/A/a
-
-@100/A/b
-
-@100/B
-
-@100/B/x
-
-@100/B/y
-```
-
-We've come full circle.
-
-@1/5
 License
 
 Zettelschrift © 2026 by Jayu Eleuthéria is licensed under Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/4.0/
